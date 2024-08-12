@@ -1,0 +1,19 @@
+server:
+  port: 8888
+
+spring:
+  profiles:
+    active: native
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        native:
+          search-locations:
+            - classpath:/configurations
+            - classpath:/configurations/product
+            - classpath:/configurations/order
+            - classpath:/configurations/customer
+            - classpath:/configurations/payment
+            - classpath:/configurations/notification
