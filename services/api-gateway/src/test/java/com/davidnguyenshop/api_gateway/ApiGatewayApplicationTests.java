@@ -1,10 +1,10 @@
-package com.davidnguyenshop.configserver;
+package com.davidnguyenshop.api_gateway;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ConfigserverApplicationTests {
+class ApiGatewayApplicationTests {
 
 	@Test
 	void contextLoads() {
