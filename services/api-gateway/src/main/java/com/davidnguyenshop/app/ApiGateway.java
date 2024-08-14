@@ -1,4 +1,4 @@
-package com.davidnguyenshop.api_gateway;
+package com.davidnguyenshop.app;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

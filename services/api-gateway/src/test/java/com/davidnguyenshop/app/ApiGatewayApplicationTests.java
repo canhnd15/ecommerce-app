@@ -1,4 +1,4 @@
-package com.davidnguyenshop.api_gateway;
+package com.davidnguyenshop.app;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
