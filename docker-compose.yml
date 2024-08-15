@@ -1,12 +1,11 @@
 services:
-
   #Postgres SQL configuration
   postgresql:
     container_name: postgres_db
     image: postgres
     environment:
       POSTGRES_USER: admin
-      POSTGRES_PASSWORD: Admin@123
+      POSTGRES_PASSWORD: root
       PGDATA: /data/postgres
     volumes:
       - postgres:/data/postgres
@@ -48,6 +47,7 @@ services:
     volumes:
       - mongo:/data
     environment:
+      - MONGO_INITDB_DATABASE=customers
       - MONGO_INITDB_ROOT_USERNAME=admin
       - MONGO_INITDB_ROOT_PASSWORD=root
   mongo-express:

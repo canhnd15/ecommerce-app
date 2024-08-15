@@ -1,0 +1,31 @@
+#eureka:
+#  instance:
+#    hostname: localhost
+#  client:
+#    service-url:
+#      defaultZone: http://localhost:8761/eureka/
+#server:
+#  port: 8090
+#spring:
+#  data:
+#    mongodb:
+#      uri: mongodb://admin:password@localhost:27017/customers
+#      username: admin
+#      password: pass
+#      host: localhost
+#      port: 27017
+#      database: customer
+#      authentication-database: admin
+
+server:
+  port: 8090
+spring:
+  data:
+    mongodb:
+      uri: mongodb://admin:root@localhost:27017/customers
+#      username: admin
+#      password: root
+#      host: localhost
+#      port: 27017
+#      database: customers
+#      authentication-database: admin

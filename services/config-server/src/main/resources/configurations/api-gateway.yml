@@ -4,8 +4,6 @@ eureka:
   client:
     register-with-eureka: false
 spring:
-  application:
-    name: api-gateway
   cloud:
     gateway:
       discovery:

@@ -1,6 +1,8 @@
 # An e-commerce application built with microservices architecture.
 
 ## Technical stack:
+- Java (version 17)
+- Maven => For managing dependencies and libraries
 - Spring Boot => For building services.
 - Reactjs => For building user interface.
 - Docker, Docker compose => For containerizing and creating images
