@@ -1,39 +1,42 @@
 package com.davidnguyenshop.app.mapper;
 
-import com.davidnguyenshop.app.dtos.NewCustomerReq;
-import com.davidnguyenshop.app.dtos.NewCustomerResp;
+import com.davidnguyenshop.app.dtos.CustomerReq;
+import com.davidnguyenshop.app.dtos.CustomerResp;
 import com.davidnguyenshop.app.entities.Customer;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Component
 public class CustomerMapper {
-    public Customer toCustomer(NewCustomerReq req){
+    public Customer toCustomer(CustomerReq req){
         if(Optional.ofNullable(req).isEmpty())
             return null;
 
         return Customer.builder()
-                .firstName(req.firstName())
-                .lastName(req.lastName())
-                .email(req.email())
-                .phone(req.phone())
-                .address(req.address())
+                .id(String.valueOf(UUID.randomUUID()))
+                .firstName(req.getFirstName())
+                .lastName(req.getLastName())
+                .email(req.getEmail())
+                .phone(req.getPhone())
+                .address(req.getAddress())
                 .build();
     }
 
-    public NewCustomerResp toCustomerResp(Customer customer) {
+    public CustomerResp toCustomerResp(Customer customer) {
         if(Optional.ofNullable(customer).isEmpty())
             return null;
 
-        return new NewCustomerResp(
-                customer.getId(),
-                customer.getFirstName(),
-                customer.getLastName(),
-                customer.getLastName() + " " + customer.getFirstName(),
-                customer.getEmail(),
-                customer.getPhone(),
-                customer.getAddress().getHouseNumber() + " " + customer.getAddress().getStreet() + " " + customer.getAddress().getCity(),
-                customer.getAddress().getZipCode());
+        return CustomerResp.builder()
+                .id(customer.getId())
+                .firstName(customer.getFirstName())
+                .lastName(customer.getLastName())
+                .fullName(customer.getLastName() + " " + customer.getFirstName())
+                .email(customer.getEmail())
+                .phone(customer.getPhone())
+                .fullAddress(customer.getAddress().getHouseNumber() + " " + customer.getAddress().getStreet() + " " + customer.getAddress().getCity())
+                .zipCode(customer.getAddress().getZipCode())
+                .build();
     }
 }
