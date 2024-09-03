@@ -1,0 +1,40 @@
+server:
+  port: 8222
+eureka:
+  client:
+    register-with-eureka: false
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: customer-service
+          uri: lb://customer-service
+          predicates:
+            - Path=/api/v1/customers/**
+            - Path=/api/v1/address/**
+#        - id: product-service
+#          uri: lb:http://PRODUCT-SERVICE
+#          predicates:
+#            - Path=/api/v1/products/**
+#        - id: order-service
+#          uri: lb:http://ORDER-SERVICE
+#          predicates:
+#            - Path=/api/v1/orders/**
+#        - id: notification-service
+#          uri: lb:http://NOTIFICATION-SERVICE
+#          predicates:
+#            - Path=/api/v1/notifications/**
+#        - id: payment-service
+#          uri: lb:http://PAYMENT-SERVICE
+#          predicates:
+#            - Path=/api/v1/payment/**
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0

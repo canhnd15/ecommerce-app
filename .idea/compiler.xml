@@ -10,9 +10,9 @@
         <module name="config-server" />
         <module name="notification" />
         <module name="discovery-server" />
-        <module name="api-gateway" />
+        <module name="customer-service" />
         <module name="payment" />
-        <module name="customer" />
+        <module name="gateway" />
         <module name="order" />
       </profile>
     </annotationProcessing>
@@ -22,11 +22,11 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="api-gateway" options="-parameters" />
       <module name="app" options="-parameters" />
       <module name="config-server" options="-parameters" />
-      <module name="customer" options="-parameters" />
+      <module name="customer-service" options="-parameters" />
       <module name="discovery-server" options="-parameters" />
+      <module name="gateway" options="-parameters" />
       <module name="notification" options="-parameters" />
       <module name="order" options="-parameters" />
       <module name="payment" options="-parameters" />

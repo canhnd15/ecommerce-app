@@ -1,6 +1,19 @@
 server:
   port: 8090
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
 spring:
+  cloud:
+    config:
+      override-system-properties: false
   data:
     mongodb:
       uri: mongodb://127.0.0.1:27017/customer?directConnection=true&serverSelectionTimeoutMS=2000
+management:
+  tracing:
+    sampling:
+      probability: 1.0
