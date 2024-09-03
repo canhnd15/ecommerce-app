@@ -14,6 +14,7 @@ public class CustomerResp {
     String fullName;
     String email;
     String phone;
+    String status;
     String fullAddress;
     String zipCode;
 }

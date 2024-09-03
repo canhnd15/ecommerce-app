@@ -24,16 +24,27 @@ public class CustomerController {
     @PutMapping("/{customerId}")
     public ResponseEntity<ApiResponse<?>> update(@PathVariable(name = "customerId") String customerId,
                                                  @RequestBody @Valid CustomerUpdateReq req) {
-        return new ResponseEntity<>(customerService.update(customerId, req), HttpStatus.CREATED);
+        return new ResponseEntity<>(customerService.update(customerId, req), HttpStatus.OK);
+    }
+
+    @PatchMapping("/{customerId}")
+    public ResponseEntity<ApiResponse<?>> changeStatus(@PathVariable(name = "customerId") String customerId) {
+        return new ResponseEntity<>(customerService.changeStatus(customerId), HttpStatus.OK);
     }
 
     @GetMapping("/")
-    public ResponseEntity<ApiResponse<?>> getCustomers() {
+    public ResponseEntity<ApiResponse<?>> findAllCustomers() {
         return new ResponseEntity<>(customerService.findAllCustomers(), HttpStatus.OK);
     }
 
     @GetMapping("/{customerId}")
-    public ResponseEntity<ApiResponse<?>> getCustomerById(@PathVariable(name = "customerId") String customerId) {
-        return new ResponseEntity<>(customerService.getCustomerById(customerId), HttpStatus.OK);
+    public ResponseEntity<ApiResponse<?>> findCustomerById(@PathVariable(name = "customerId") String customerId) {
+        return new ResponseEntity<>(customerService.getCustomerById(customerId), HttpStatus.FOUND);
+    }
+
+    @GetMapping("/findByIdAndStatus")
+    public ResponseEntity<ApiResponse<?>> findCustomerByIdAndStatus(@RequestParam(name = "customerId") String customerId,
+                                                                    @RequestParam(name = "status") String status) {
+        return new ResponseEntity<>(customerService.findCustomerByIdAndStatus(customerId, status), HttpStatus.FOUND);
     }
 }

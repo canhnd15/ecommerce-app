@@ -1,10 +1,10 @@
 package com.davidnguyenshop.app.dtos;
 
+import com.davidnguyenshop.app.annotation.PhoneValidator;
 import com.davidnguyenshop.app.entities.Address;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,7 +24,7 @@ public class CustomerUpdateReq {
     @Email(message = "Customer email is invalided!")
     String email;
 
-    @Pattern(regexp="(^$|[0-9]{10})")
+    @PhoneValidator(message = "Phone number is not valid in Vietnam. It must start with 03, 05, 07, 08, or 09 and have 10 digits.")
     @NotBlank(message = "Phone cannot be empty or blank")
     String phone;
 

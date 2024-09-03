@@ -3,6 +3,8 @@ package com.davidnguyenshop.app.mapper;
 import com.davidnguyenshop.app.dtos.CustomerCreateReq;
 import com.davidnguyenshop.app.dtos.CustomerResp;
 import com.davidnguyenshop.app.entities.Customer;
+import com.davidnguyenshop.app.enums.CustomerStatus;
+import com.davidnguyenshop.app.utils.CustomerUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -20,6 +22,7 @@ public class CustomerMapper {
                 .lastName(req.getLastName())
                 .email(req.getEmail())
                 .phone(req.getPhone())
+                .status(req.getStatus())
                 .address(req.getAddress())
                 .build();
     }
@@ -32,10 +35,11 @@ public class CustomerMapper {
                 .id(customer.getId())
                 .firstName(customer.getFirstName())
                 .lastName(customer.getLastName())
-                .fullName(customer.getLastName() + " " + customer.getFirstName())
+                .fullName(CustomerUtils.getFullName(customer))
                 .email(customer.getEmail())
                 .phone(customer.getPhone())
-                .fullAddress(customer.getAddress().getHouseNumber() + " " + customer.getAddress().getStreet() + " " + customer.getAddress().getCity())
+                .status(customer.getStatus())
+                .fullAddress(CustomerUtils.getFullAddress(customer))
                 .zipCode(customer.getAddress().getZipCode())
                 .build();
     }

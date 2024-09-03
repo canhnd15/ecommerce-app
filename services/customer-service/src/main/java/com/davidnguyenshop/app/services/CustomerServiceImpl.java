@@ -5,14 +5,12 @@ import com.davidnguyenshop.app.entities.Customer;
 import com.davidnguyenshop.app.dtos.ApiResponse;
 import com.davidnguyenshop.app.dtos.CustomerCreateReq;
 import com.davidnguyenshop.app.dtos.CustomerResp;
+import com.davidnguyenshop.app.enums.CustomerStatus;
 import com.davidnguyenshop.app.enums.StatusCode;
 import com.davidnguyenshop.app.exceptions.CustomerNotFoundException;
 import com.davidnguyenshop.app.mapper.CustomerMapper;
 import com.davidnguyenshop.app.repositories.CustomerRepository;
-import com.davidnguyenshop.app.utils.CustomerUtils;
-import com.davidnguyenshop.app.utils.ResourceMessage;
 import lombok.RequiredArgsConstructor;
-import org.apache.logging.log4j.util.Strings;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,7 +21,6 @@ import java.util.List;
 public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepository customerRepository;
     private final CustomerMapper customerMapper;
-    private final ResourceMessage resourceMessage;
 
     @Override
     @Transactional
@@ -42,65 +39,83 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ApiResponse<?> getCustomerById(String customerId) {
         Customer customer = customerRepository.findById(customerId)
-                .orElseThrow(() -> new CustomerNotFoundException("Customer not found with id: " + customerId));
+                .orElseThrow(() -> new CustomerNotFoundException(String.format("Customer not found with id %s", customerId)));
 
-        CustomerResp resp = CustomerResp.builder()
-                .id(customerId)
-                .firstName(customer.getFirstName())
-                .lastName(customer.getLastName())
-                .fullName(CustomerUtils.getFullName(customer))
-                .email(customer.getEmail())
-                .phone(customer.getPhone())
-                .fullAddress(CustomerUtils.getFullAddress(customer))
-                .zipCode(customer.getAddress().getZipCode())
-                .build();
+        CustomerResp resp = customerMapper.toCustomerResp(customer);
 
         return ApiResponse.builder()
                 .status(String.valueOf(StatusCode.SUCCESS))
-                .message("")
+                .message("Found!")
                 .data(resp)
                 .build();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ApiResponse<?> findAllCustomers() {
         List<CustomerResp> customers = customerRepository.findAll().stream()
-                .map((customer) -> CustomerResp.builder()
-                        .id(customer.getId())
-                        .firstName(customer.getFirstName())
-                        .lastName(customer.getLastName())
-                        .fullName(CustomerUtils.getFullName(customer))
-                        .email(customer.getEmail())
-                        .phone(customer.getPhone())
-                        .fullAddress(CustomerUtils.getFullAddress(customer))
-                        .zipCode(customer.getAddress().getZipCode())
-                        .build())
+                .map(customerMapper::toCustomerResp)
                 .toList();
 
         return ApiResponse.builder()
                 .status(String.valueOf(StatusCode.SUCCESS))
-                .message("")
+                .message("Found!")
                 .data(customers)
                 .build();
     }
 
     @Override
+    @Transactional
     public ApiResponse<?> update(String customerId, CustomerUpdateReq req) {
         Customer customer = customerRepository.findById(customerId)
                 .orElseThrow(() -> new CustomerNotFoundException("Customer not found with id: " + customerId));
 
-        if(!Strings.isEmpty(req.getFirstName()) && !Strings.isBlank(req.getFirstName()))
-            customer.setFirstName(req.getFirstName());
+        customer.setFirstName(req.getFirstName());
+        customer.setLastName(req.getLastName());
+        customer.setEmail(req.getEmail());
+        customer.setPhone(req.getPhone());
+        customer.setAddress(req.getAddress());
 
-        if(!Strings.isEmpty(req.getLastName()) && !Strings.isBlank(req.getLastName()))
-            customer.setLastName(req.getLastName());
+        customer = customerRepository.save(customer);
 
-        if(!Strings.isEmpty(req.getEmail()) && !Strings.isBlank(req.getEmail()))
-            customer.setFirstName(req.getFirstName());
+        return ApiResponse.builder()
+                .status(StatusCode.SUCCESS.name())
+                .message("Updated!")
+                .data(customerMapper.toCustomerResp(customer))
+                .build();
+    }
 
+    @Override
+    @Transactional(readOnly = true)
+    public ApiResponse<?> findCustomerByIdAndStatus(String id, String status) {
+        Customer customer = customerRepository.findCustomerByIdAndStatus(id, status)
+                .orElseThrow(() -> new CustomerNotFoundException(String.format("Customer not found with id %s and status %s", id, status)));
 
-        return null;
+        return ApiResponse.builder()
+                .status(StatusCode.SUCCESS.name())
+                .message("Found!")
+                .data(customerMapper.toCustomerResp(customer))
+                .build();
+    }
+
+    @Override
+    public ApiResponse<?> changeStatus(String id) {
+        Customer customer = customerRepository.findById(id)
+                .orElseThrow(() -> new CustomerNotFoundException(String.format("Customer not found with id %s", id)));
+
+        if(CustomerStatus.ACTIVE.name().equals(customer.getStatus())) {
+            customer.setStatus(CustomerStatus.INACTIVE.name());
+        } else {
+            customer.setStatus(CustomerStatus.ACTIVE.name());
+        }
+
+        return ApiResponse.builder()
+                .status(StatusCode.SUCCESS.name())
+                .message("Updated!")
+                .data(customerMapper.toCustomerResp(customer))
+                .build();
     }
 }

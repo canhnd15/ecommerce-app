@@ -12,4 +12,8 @@ public interface CustomerService {
     ApiResponse<?> findAllCustomers();
 
     ApiResponse<?> update(String customerId, CustomerUpdateReq req);
+
+    ApiResponse<?> findCustomerByIdAndStatus(String id, String status);
+
+    ApiResponse<?> changeStatus(String customerId);
 }

@@ -1,6 +1,5 @@
 package com.davidnguyenshop.app.dtos;
 
-import com.davidnguyenshop.app.annotation.CountryEnums;
 import com.davidnguyenshop.app.annotation.PhoneValidator;
 import com.davidnguyenshop.app.entities.Address;
 import jakarta.validation.constraints.Email;
@@ -24,6 +23,9 @@ public class CustomerCreateReq {
         @NotNull(message = "Customer email is required!")
         @Email(message = "Customer email is invalided!")
         String email;
+
+        @NotNull(message = "Customer status is required!")
+        String status;
 
         @PhoneValidator(message = "Phone number is not valid in Vietnam. It must start with 03, 05, 07, 08, or 09 and have 10 digits.")
         @NotNull(message = "Customer phone is required!")
